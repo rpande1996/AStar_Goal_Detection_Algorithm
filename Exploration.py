@@ -265,3 +265,106 @@ class exploration_r:
             # print(x,y,theta_d+theta)
             # print("self.cost",self.cost)
         return image, x, y
+
+    def expanding(self, pos_0, pos_1, n):
+        """
+            This function checks if the node is in expanded /visited list and
+            if it not then appends in the expanded list
+
+
+            Parameters
+            ----------
+
+            pos_0 : Int
+                x_coordinate of the current node
+            pos_1 : Int
+                y_coordinate of the current node
+
+            Returns
+            -------
+
+        """
+        cnvt_front = self.string(pos_0, pos_1, n)
+        if int(cnvt_front) in self.expanded:
+
+            a = 1
+        else:
+            self.expanded.append(int(cnvt_front))
+
+    def frontier_list(self, image):
+        """
+            This function checks if the node is in expanded/visited list  and
+            pops out untill it finds a node that has not been visited/expanded.
+
+
+            Parameters
+            ----------
+
+            Returns
+            -------
+
+            pos_0 : Int
+                x_coordinate of the current node
+            pos_1 : Int
+                y_coordinate of the current node
+
+
+
+        """
+        # p=min(self.frontier)
+        # pos_0,pos_1=self.frontier[p]
+        # print(min(self.frontier,key=self.frontier.get),self.frontier[min(self.frontier,key=self.frontier.get)])
+        # print(self.frontier)
+        pos_0, pos_1, n = min(self.frontier, key=self.frontier.get)
+        # print("value from frontier",pos_0,pos_1,n)
+        n = int(n)
+        theta = n * self.theta_diff
+        # self.frontier=dict(sorted(self.frontier.items(),key=lambda x: x[1],reverse=True))
+        # print("frontier",type(self.frontier))
+        # pos_0,pos_1=min(self.frontier,key=self.frontier.get)
+        # pos_0,pos_1=self.frontier,key=self.frontier.get)
+        # [pos_0,pos_1],cost=self.frontier.popitem()
+        # pos_0,pos_1=self.frontier.pop(0)
+        self.current_score = [pos_0, pos_1, n]
+
+        cost = self.frontier[pos_0, pos_1, n]
+        # print(pos_0,pos_1,theta,cost)
+        # print(self.frontier)
+        del self.frontier[pos_0, pos_1, n]
+
+        # print(self.frontier)
+        # print("self.image_p[pos_0,pos_1,n]",self.image_p[pos_0,pos_1,n])
+        # print(2)
+        if self.image_p[round(pos_0 / self.threshold), round(pos_1 / self.threshold), n] == 1 or np.array_equiv(
+                image[299 - pos_0, pos_1, :], np.array([00, 00, 0])) or self.image_p[
+            round(pos_0 / self.threshold), round(pos_1 / self.threshold), n] == 2:
+
+            # print(1)
+            # elif int(self.current_score) in self.obstacle:
+            # pos_0,pos_1,theta_d=self.frontier_list(image)
+            return self.frontier_list(image)
+        # else:
+        # print(pos_0,pos_1,n*self.theta_diff,cost)
+        # print(3)
+        else:
+            image[299 - pos_0, pos_1, :] = 200, 200, 0
+            self.image_p[
+                round(pos_0 / self.threshold), round(pos_1 / self.threshold), round(theta / self.theta_diff)] = 1
+            """if int(self.current_score) in self.expanded:
+
+                 self.frontier_list(image)
+            elif int(self.current_score) in self.obstacle:
+                 self.frontier_list(image)"""
+            # print("cost", pos_0,pos_1,cost)
+            # cv2.line(image,self.parent_pos,(pos_1,299-pos_0),(200,200,0),1)
+            image = image.astype(np.uint8)
+        # print("2nd_check",pos_0,pos_1,n*self.theta_diff,cost)
+        # print("expanded",self.expanded)
+        # print(pos_0,pos_1,n)
+        return pos_0, pos_1, n
+
+        # image=image.astype(np.uint8)
+        # print("2nd_check",pos_0,pos_1,n*self.theta_diff,cost)
+        # print("expanded",self.expanded)
+        # return pos_0,pos_1,n*self.theta_diff
+
