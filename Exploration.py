@@ -368,3 +368,219 @@ class exploration_r:
         # print("expanded",self.expanded)
         # return pos_0,pos_1,n*self.theta_diff
 
+    def circle(self, image, radius, i, j, c_x, c_y):
+        """
+            This function give points that lies in circle.
+
+
+            Parameters
+            ----------
+            image : np.array
+                This is the image or state in which the location of obstacle is updated
+            radius : Int
+                Radius of the circle
+            i : Int
+                x_coordinate of point
+            j : Int
+                y coordinate of points
+            c_x:Int
+                x coordinate of center of the circle
+            c_y:Int
+                y coordinate of center of the circle
+            Returns
+            -------
+
+
+
+
+
+        """
+        major_axis = radius
+        minor_axis = radius
+        self.ellipse(image, major_axis, minor_axis, i, j, c_x, c_y)
+
+    def ellipse(self, image, major_axis, minor_axis, i, j, c_x, c_y):
+        """
+            This function give points that lies in ellipse.
+
+
+            Parameters
+            ----------
+            image : np.array
+                This is the image or state in which the location of obstacle is updated
+            radius : Int
+                Radius of the circle
+            major_axis: Int
+                elongation of elipse across y axis
+            minor_axis: Int
+                elogation of ellipse across x axis
+            i : Int
+                x_coordinate of point
+            j : Int
+                y coordinate of points
+            c_x:Int
+                x coordinate of center of the circle
+            c_y: Int
+                y coordinate of center of the circle
+
+            Returns
+            -------
+
+
+
+
+
+        """
+        if (((i - c_x) / (minor_axis + self.padding)) ** 2 + ((j - c_y) / (major_axis + self.padding)) ** 2) <= 1:
+            # print("yes")
+            image[299 - i, j, :] = 0, 0, 0
+            self.image_p[i, j, :] = 2
+            # self.obstacle.append([i,j])
+
+    def slanted_rect(self, image, i, j):
+        """
+            This function give points that lies in slanted rectangle.
+
+
+            Parameters
+            ----------
+            image : np.array
+                This is the image or state in which the location of obstacle is updated
+
+            i : Int
+                x_coordinate of point
+            j : Int
+                y coordinate of points
+
+
+            Returns
+            -------
+
+        """
+        s1 = 0.7
+        s2 = -1.42814
+        x1 = np.arctan(s1)
+        x2 = np.arctan(s2)
+        d1 = np.cos(np.pi - x1)
+        d2 = np.cos(np.pi - x2)
+        a = -(self.padding / d1)
+        b = -(self.padding / d2)
+        if (-0.7 * j + 1 * i) >= (73.4 - a) and (i + 1.42814 * j) >= (172.55 - b) and (-0.7 * j + 1 * i) <= (
+                99.81 + a) and (i + 1.42814 * j) <= (429.07 + b):
+            image[299 - i, j, :] = 0, 0, 0
+            self.image_p[i, j, :] = 2
+
+    def c_shape(self, image, i, j):
+        """
+            This function give points that lies in c shape.
+
+
+            Parameters
+            ----------
+            image : np.array
+                This is the image or state in which the location of obstacle is updated
+
+            i : Int
+                x_coordinate of point
+            j : Int
+                y coordinate of points
+
+
+            Returns
+            -------
+
+
+
+
+
+        """
+
+        if ((i <= 280 + self.padding) and (j >= 200 - self.padding) and (i >= 230 - self.padding) and (
+                j <= 230 + self.padding)) and not (
+                (i <= 270 - self.padding) and (j >= 210 + self.padding) and (i >= 240 + self.padding) and (
+                j <= 230 + self.padding)):
+            image[299 - i, j, :] = 0, 0, 0
+            self.image_p[i, j, :] = 2
+
+    def polygon(self, image, i, j):
+        """
+            This function give points that lies in complex polygon.
+
+
+            Parameters
+            ----------
+            image : np.array
+                This is the image or state in which the location of obstacle is updated
+
+            i : Int
+                x_coordinate of point
+            j : Int
+                y coordinate of points
+
+
+            Returns
+            -------
+
+
+
+
+
+        """
+        if (
+                i + j >= 391 and j - i <= 265 and i + 0.81 * j <= 425.66 and i + 0.17 * j <= 200 and 0.89 * j - i >= 148.75) or (
+                13.5 * j + i <= 5256.72 and 1.43 * j - i >= 368.82 and i + 0.81 * j >= 425.66):
+            image[299 - i, j, :] = 0, 0, 0
+            self.image_p[i, j, :] = 2
+            # print(2)
+
+    def backtracking(self, image, out, image_list):
+        """
+            The function backtracks from goal to start node
+            and gives an path
+
+
+            Parameters
+            ----------
+            image : np.array
+                This is the image or state in which the location of obstacle is updated
+            out : np.array
+                video writing array
+            image_list:
+                list of frames that have been saved  while exploring
+
+            Returns
+            -------
+            path : list
+                Returns the path that needs to be followed
+            image_list : List
+                Returns list of images/ frames used in exploration and backtracking
+
+
+
+
+
+        """
+        loop = self.parent_orignal_data[self.goal_score]
+        # print("self.goal_score",self.goal_score)
+
+        path = [self.goal]
+        # print(self.start_score)
+        while int(self.start_score) != int(loop):
+            #    pass
+            # loop
+            parent_pos = self.data_with_string[loop]
+            # print("loop",loop)
+            # print(loop)
+            # print("start",self.start_score)
+            loop = self.parent_orignal_data[loop]
+            index = self.data_with_string[loop]
+            # print(index)
+            if index == self.start:
+                break
+            cv2.line(image, (parent_pos[1], 299 - parent_pos[0]), (index[1], 299 - index[0]), (255, 0, 0), 1)
+            path.append(index)
+            image[299 - index[0], index[1], :] = 255, 0, 0
+            out.write(image)
+            image_list.append(image)
+
+        return path, image_list
