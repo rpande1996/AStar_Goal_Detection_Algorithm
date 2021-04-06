@@ -66,33 +66,60 @@ class exploration_r:
         self.image_p = np.zeros(
             [round(300 / self.threshold), round(400 / self.threshold), round(360 / self.theta_diff)])
 
-        def obstacle_prone_area(self, image):
-            """
-            Checks if the goal state or start state is in the obstacle area
+    def obstacle_prone_area(self, image):
+        """
+        Checks if the goal state or start state is in the obstacle area
 
-            Parameters:
-            -----------
-            image : np.array
-                Inputs image for adding obstacle
+        Parameters:
+        -----------
+        image : np.array
+            Inputs image for adding obstacle
 
-            Returns
-            -------
-            Boolean : Boolean
-                Returns True if wither of goal or start is in obstacle space
-                else returns False
+        Returns
+        -------
+        Boolean : Boolean
+            Returns True if wither of goal or start is in obstacle space
+            else returns False
 
 
-            """
+        """
 
-            start_x = self.start[0]
-            start_y = self.start[1]
-            goal_x = self.goal[0]
-            goal_y = self.goal[1]
+        start_x = self.start[0]
+        start_y = self.start[1]
+        goal_x = self.goal[0]
+        goal_y = self.goal[1]
 
-            if (np.array_equiv(image[299 - goal_x, goal_y, :], np.array([0, 0, 0]))) or (
-            np.array_equiv(image[299 - start_x, start_y, :], np.array([0, 0, 0]))):
-                # print(1)
-                return False
-            else:
-                # print(2)
-                return True
+        if (np.array_equiv(image[299 - goal_x, goal_y, :], np.array([0, 0, 0]))) or (
+                np.array_equiv(image[299 - start_x, start_y, :], np.array([0, 0, 0]))):
+            # print(1)
+            return False
+        else:
+            # print(2)
+            return True
+
+
+    def obstacles_form(self,image):
+        """
+        Create all obstacles in the images by calling various obstacle functions
+
+        Parameters
+        ----------
+        image : np.array
+            InputsImage for adding obstacle
+        """
+        major_axis=60
+        minor_axis=30
+        c_y=246
+        c_x=145
+        c_y1=90
+        c_x1=70
+        radius=35
+        for i in range(len(image)):
+            for  j in range(len(image[0])):
+
+                self.ellipse(image,major_axis,minor_axis,i,j,c_x,c_y)
+                self.circle(image,radius,i,j,c_x1,c_y1)
+                self.slanted_rect(image,i,j)
+                self.polygon(image,i,j)
+                self.c_shape(image,i,j)
+        #exploration.c_shape(image,i,j)
