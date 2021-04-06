@@ -90,7 +90,7 @@ class exploration_r:
         goal_y = self.goal[1]
 
         if (np.array_equiv(image[299 - goal_x, goal_y, :], np.array([0, 0, 0]))) or (
-                np.array_equiv(image[299 - start_x, start_y, :], np.array([0, 0, 0]))):
+        np.array_equiv(image[299 - start_x, start_y, :], np.array([0, 0, 0]))):
             # print(1)
             return False
         else:
