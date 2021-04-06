@@ -65,3 +65,34 @@ class exploration_r:
 
         self.image_p = np.zeros(
             [round(300 / self.threshold), round(400 / self.threshold), round(360 / self.theta_diff)])
+
+        def obstacle_prone_area(self, image):
+            """
+            Checks if the goal state or start state is in the obstacle area
+
+            Parameters:
+            -----------
+            image : np.array
+                Inputs image for adding obstacle
+
+            Returns
+            -------
+            Boolean : Boolean
+                Returns True if wither of goal or start is in obstacle space
+                else returns False
+
+
+            """
+
+            start_x = self.start[0]
+            start_y = self.start[1]
+            goal_x = self.goal[0]
+            goal_y = self.goal[1]
+
+            if (np.array_equiv(image[299 - goal_x, goal_y, :], np.array([0, 0, 0]))) or (
+            np.array_equiv(image[299 - start_x, start_y, :], np.array([0, 0, 0]))):
+                # print(1)
+                return False
+            else:
+                # print(2)
+                return True
