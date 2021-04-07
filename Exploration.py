@@ -137,7 +137,7 @@ class exploration_r:
         #self.start_score=self.string(self.start[0],self.start[1])
         #self.data_with_string[self.start_score]=self.start
         #self.goal_score=self.string(pos_0,pos_1)
-        if self.h(self.current_score[0],self.current_score[1]) <=1.5*5 :
+        if self.h(self.current_score[0],self.current_score[1]) <=self.step_size :
             self.goal_score=self.string(self.current_score[0],self.current_score[1],self.current_score[2])
             print("goal_reached")
             #print(len(self.expanded))
