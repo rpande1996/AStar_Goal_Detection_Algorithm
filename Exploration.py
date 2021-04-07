@@ -589,6 +589,11 @@ class exploration_r:
 
                 break
             image_list.append(image)
-
+        while True:
+            cv2.imshow("image",image)
+            if cv2.waitKey(0) & 0xFF==ord('q'):
+    
+    
+                    break
         return path,image_list
  
