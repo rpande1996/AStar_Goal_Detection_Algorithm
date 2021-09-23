@@ -1,4 +1,7 @@
-# ENPM661-AStar
+# AStar goal detection of a rigid robot:
+Code developed by:
+Rajan Pande: rpande@umd.edu
+Abhilash Mane: amane@umd.edu
 This repository takes in user input about start point end point orientation and calculates A* path using
 
 The code is done on Anaconda Spyder on Python 3.7 and recommended to perform on the same if possible
