@@ -6,8 +6,8 @@ Rajan Pande: rpande@umd.edu
 
 Abhilash Mane: amane@umd.edu
 
-This repository takes in user input about start point end point orientation and calculates A* path using
-
+This repository takes in user input about start point end point orientation and calculates A* path using video of exploration and backttracking gets saved in folder
+This code has been runned on 32 gb Ram pc
 The code is done on Anaconda Spyder on Python 3.7 and recommended to perform on the same if possible
 
 Libraries and command to install those:
@@ -53,12 +53,3 @@ Instruction to run the code:
            radius size : 
 
            clearance size : 
-
- 
-
-video of exploration and backttracking gets saved in folder
-
-
-
-
-This code has been runned on 32 gb Ram pc
