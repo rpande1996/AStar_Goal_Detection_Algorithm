@@ -1,6 +1,6 @@
 # AStar goal detection of a rigid robot:
 
-Code developed by:
+# Code developed by:
 
 Rajan Pande: rpande@umd.edu
 
